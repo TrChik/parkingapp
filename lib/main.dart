@@ -36,12 +36,9 @@ class MyHomePage extends StatelessWidget {
           builder: (BuildContext context, ScrollController scrollController) {
             return Container(
               color: Colors.blue[100],
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: 25,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(title: Text('Item $index'));
-                },
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'yes',
               ),
             );
           },
