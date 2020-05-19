@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:parkingapp/widgets/sidemenu.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -30,8 +31,21 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('trying get stuff to work here ok'),
       ),
-      body: Center(
-        
+      body: SizedBox.expand(
+        child: DraggableScrollableSheet(
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Container(
+              color: Colors.blue[100],
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: 25,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(title: Text('Item $index'));
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

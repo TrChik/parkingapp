@@ -21,7 +21,7 @@ class NavDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('get listing'),
-              onTap: () => {},
+              onTap: () => {Navigator.of(context).pop()},
             ),
             ListTile(
               title: Text('reload'),
