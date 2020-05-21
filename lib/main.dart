@@ -33,14 +33,32 @@ class MyHomePage extends StatelessWidget {
       ),
       body: SizedBox.expand(
         child: DraggableScrollableSheet(
+          initialChildSize: 0.04,
+          minChildSize: 0.04,
           builder: (BuildContext context, ScrollController scrollController) {
-            return Container(
-              color: Colors.blue[100],
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'yes',
-              ),
+            return ClipRRect(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+              child: Container(
+                color: Colors.blue[100],
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: 25,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(title: Text('Item $index'));
+                  },
+                )
+              )
             );
+            // return Container(
+            //   color: Colors.blue[100],
+            //   child: ListView.builder(
+            //     controller: scrollController,
+            //     itemCount: 25,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return ListTile(title: Text('Item $index'));
+            //     },
+            //   ),
+            // );
           },
         ),
       ),
