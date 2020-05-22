@@ -49,7 +49,19 @@ class MyHomePage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       color: Colors.blue[600],
-                      height: scrollableSheetDragBarHeight      // here, you need to add that white cool thingie
+                      height: scrollableSheetDragBarHeight,      // here, you need to add that white cool thingie
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: scrollableSheetDragBarHeight/2,
+                            color: Colors.green[100]
+                          ),
+                          Container(
+                            height: scrollableSheetDragBarHeight/2,
+                            color: Colors.red[100]
+                          )
+                        ],
+                      )
                     ),
                     ListTile(title: Text('no')),
                   ]
