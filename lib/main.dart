@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:parkingapp/widgets/sidemenu.dart';
@@ -22,8 +23,10 @@ class MyApp extends StatelessWidget {
 }
 
 
+
 class MyHomePage extends StatelessWidget {
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,32 +36,26 @@ class MyHomePage extends StatelessWidget {
       ),
       body: SizedBox.expand(
         child: DraggableScrollableSheet(
-          initialChildSize: 0.04,
-          minChildSize: 0.04,
+          initialChildSize: 0.02,
+          minChildSize: 0.02,
           builder: (BuildContext context, ScrollController scrollController) {
+          double scrollableSheetDragBarHeight = MediaQuery.of(context).size.height * 0.1;
             return ClipRRect(
               borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
               child: Container(
                 color: Colors.blue[100],
-                child: ListView.builder(
+                child: ListView(
                   controller: scrollController,
-                  itemCount: 25,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(title: Text('Item $index'));
-                  },
+                  children: <Widget>[
+                    Container(
+                      color: Colors.blue[600],
+                      height: scrollableSheetDragBarHeight      // here, you need to add that white cool thingie
+                    ),
+                    ListTile(title: Text('no')),
+                  ]
                 )
               )
             );
-            // return Container(
-            //   color: Colors.blue[100],
-            //   child: ListView.builder(
-            //     controller: scrollController,
-            //     itemCount: 25,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return ListTile(title: Text('Item $index'));
-            //     },
-            //   ),
-            // );
           },
         ),
       ),
