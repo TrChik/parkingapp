@@ -36,8 +36,8 @@ class MyHomePage extends StatelessWidget {
       ),
       body: SizedBox.expand(
         child: DraggableScrollableSheet(
-          initialChildSize: 0.02,
-          minChildSize: 0.02,
+          initialChildSize: 0.05,
+          minChildSize: 0.05,
           builder: (BuildContext context, ScrollController scrollController) {
           double scrollableSheetDragBarHeight = MediaQuery.of(context).size.height * 0.1;
             return ClipRRect(
