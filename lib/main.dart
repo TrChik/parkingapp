@@ -54,11 +54,26 @@ class MyHomePage extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             height: scrollableSheetDragBarHeight/2,
-                            color: Colors.green[100]
+                            child: Center(
+                              child: Container(
+                                width: 100,
+                                height: scrollableSheetDragBarHeight/6,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  child: Container(
+                                    color: Colors.black45,
+                                  )
+                                )
+                              )
+                            )
                           ),
                           Container(
                             height: scrollableSheetDragBarHeight/2,
-                            color: Colors.red[100]
+                            padding: EdgeInsets.only(top: 7),
+                            child: Text(
+                              'Info',
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)
+                            ),
                           )
                         ],
                       )
