@@ -29,7 +29,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
-        title: Text('try better'),
+        title: Text('trying get stuff to work here ok'),
       ),
       body: SizedBox.expand(
         child: DraggableScrollableSheet(
@@ -37,17 +37,17 @@ class MyHomePage extends StatelessWidget {
           minChildSize: 0.04,
           builder: (BuildContext context, ScrollController scrollController) {
             return ClipRRect(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                child: Container(
-                    color: Colors.red[100],
-                    child: ListView.builder(
-                      controller: scrollController,
-                      itemCount: 10,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(title: Text('Item $index'));
-                      },
-                    )
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+              child: Container(
+                color: Colors.blue[100],
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: 25,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(title: Text('Item $index'));
+                  },
                 )
+              )
             );
             // return Container(
             //   color: Colors.blue[100],
