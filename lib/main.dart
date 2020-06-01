@@ -97,8 +97,9 @@ class MyHomePage extends StatelessWidget {
                   },
                   color: Colors.blue[400],
                   child: Container(
-                    padding: EdgeInsets.only(left: 100, right: 100),
-                    child: Text('View list')
+                    padding: EdgeInsets.only(left: 120, right: 120),
+                    child: Text('View list',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))
                   )
                 )
               ),
@@ -110,7 +111,8 @@ class MyHomePage extends StatelessWidget {
                   color: Colors.blue[400],
                   child: Container(
                     padding: EdgeInsets.only(left: 100, right: 100),
-                    child: Text('Reserve place')
+                    child: Text('Reserve place',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))
                   )
                 )
               )
@@ -118,8 +120,8 @@ class MyHomePage extends StatelessWidget {
           ),
           SizedBox.expand(
             child: DraggableScrollableSheet(
-              initialChildSize: 0.4,
-              minChildSize: 0.4,
+              initialChildSize: 0.05,
+              minChildSize: 0.05,
               builder: (BuildContext context, ScrollController scrollController) {
               double scrollableSheetDragBarHeight = MediaQuery.of(context).size.height * 0.1;
                 return ClipRRect(
@@ -160,7 +162,15 @@ class MyHomePage extends StatelessWidget {
                             ],
                           )
                         ),
-                        ListTile(title: Text('no')),
+                        ListTile(title: Text( '''The price of a place on weekdays – 7 UAH/h (from 12 o`clock to 15- 8 UAH/h )
+                                      Place price on weekends – 10 UAH/ h
+                                      Season tickets:
+                                      • Month – 600 UAH
+                                      • 3 month- 1500 UAH
+                                      • Half year- 2800 UAH
+                                      For regular customers hourly discount – 2 UAH. 
+                                      The price of providing additional technical services (such as car washing, refuelling, etc.)- depending on the services provided.
+                                      Fine for a long delay in the parking lot – 300 UAH.''', maxLines: 9,)),
                       ]
                     )
                   )
