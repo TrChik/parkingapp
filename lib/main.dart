@@ -77,23 +77,7 @@ class MyHomePage extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: RaisedButton(
                   onPressed: () {
-                    showDialog(
-                    context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        title: new Text('Hey!'),
-                        content: new Text('Hello'),
-                        actions: <Widget>[
-                          new FlatButton(
-                            child: new Text('Close'),
-                            onPressed: (){
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    },
-                  );
+                    _showListDialog();
                   },
                   color: Colors.blue[400],
                   child: Container(
@@ -153,7 +137,7 @@ class MyHomePage extends StatelessWidget {
                               ),
                               Container(
                                 height: scrollableSheetDragBarHeight/2,
-                                padding: EdgeInsets.only(top: 7),
+                                padding: EdgeInsets.only(top: 5),
                                 child: Text(
                                   'Info',
                                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)
@@ -162,15 +146,28 @@ class MyHomePage extends StatelessWidget {
                             ],
                           )
                         ),
-                        ListTile(title: Text( '''The price of a place on weekdays – 7 UAH/h (from 12 o`clock to 15- 8 UAH/h )
-                                      Place price on weekends – 10 UAH/ h
-                                      Season tickets:
-                                      • Month – 600 UAH
-                                      • 3 month- 1500 UAH
-                                      • Half year- 2800 UAH
-                                      For regular customers hourly discount – 2 UAH. 
-                                      The price of providing additional technical services (such as car washing, refuelling, etc.)- depending on the services provided.
-                                      Fine for a long delay in the parking lot – 300 UAH.''', maxLines: 9,)),
+                        ListTile(
+                          contentPadding: EdgeInsets.all(8),
+                          title: Text(
+                          '''The price of a place on weekdays – 7 UAH/h 
+(from 12 o`clock to 15 - 8 UAH/h)
+
+Place price on weekends – 10 UAH/ h
+Season tickets:
+• Month – 600 UAH
+• 3 month- 1500 UAH
+• Half year- 2800 UAH
+
+For regular customers hourly discount – 2 UAH. 
+
+The price of providing additional technical services 
+(such as car washing, refuelling, etc.) - depending on the services provided.
+
+Fine for a long delay in the parking lot – 300 UAH.''', 
+                            maxLines: 20,
+                            style: TextStyle(fontSize: 18)
+                          )
+                        ),
                       ]
                     )
                   )
