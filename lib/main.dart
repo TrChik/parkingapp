@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:parkingapp/widgets/sidemenu.dart';
 
@@ -11,6 +12,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       title: 'Hello?',
       theme: ThemeData(
@@ -49,7 +54,7 @@ class MyHomePage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       color: Colors.blue[600],
-                      height: scrollableSheetDragBarHeight,      // here, you need to add that white cool thingie
+                      height: scrollableSheetDragBarHeight,      
                       child: Column(
                         children: <Widget>[
                           Container(
