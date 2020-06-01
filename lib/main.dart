@@ -34,6 +34,27 @@ class MyHomePage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    
+    void _showListDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: new Text('Hey!'),
+            content: new Text('Hello'),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Close'),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
@@ -55,7 +76,25 @@ class MyHomePage extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                    context: context,
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: new Text('Hey!'),
+                        content: new Text('Hello'),
+                        actions: <Widget>[
+                          new FlatButton(
+                            child: new Text('Close'),
+                            onPressed: (){
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    },
+                  );
+                  },
                   color: Colors.blue[400],
                   child: Container(
                     padding: EdgeInsets.only(left: 100, right: 100),
@@ -63,12 +102,24 @@ class MyHomePage extends StatelessWidget {
                   )
                 )
               ),
+              const SizedBox(height: 5),
+              ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: RaisedButton(
+                  onPressed: () {},
+                  color: Colors.blue[400],
+                  child: Container(
+                    padding: EdgeInsets.only(left: 100, right: 100),
+                    child: Text('Reserve place')
+                  )
+                )
+              )
             ],
           ),
           SizedBox.expand(
             child: DraggableScrollableSheet(
-              initialChildSize: 0.05,
-              minChildSize: 0.05,
+              initialChildSize: 0.4,
+              minChildSize: 0.4,
               builder: (BuildContext context, ScrollController scrollController) {
               double scrollableSheetDragBarHeight = MediaQuery.of(context).size.height * 0.1;
                 return ClipRRect(
