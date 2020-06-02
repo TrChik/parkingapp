@@ -35,25 +35,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    void _showListDialog() {
-      showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return AlertDialog(
-            title: new Text('Hey!'),
-            content: new Text('Hello'),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text('Close'),
-                onPressed: (){
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        },
-      );
-    }
+    
 
     return Scaffold(
       drawer: NavDrawer(),
@@ -77,7 +59,10 @@ class MyHomePage extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: RaisedButton(
                   onPressed: () {
-                    _showListDialog();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ViewRoute()),
+                    );
                   },
                   color: Colors.blue[400],
                   child: Container(
@@ -91,7 +76,12 @@ class MyHomePage extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ReserveRoute()),
+                    );
+                  },
                   color: Colors.blue[400],
                   child: Container(
                     padding: EdgeInsets.only(left: 100, right: 100),
@@ -176,6 +166,53 @@ Fine for a long delay in the parking lot – 300 UAH.''',
             ),
           ),
         ],
+      )
+    );
+  }
+}
+
+class ViewRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    double containerWidth = MediaQuery.of(context).size.width / 2;
+    return Scaffold(
+      appBar: AppBar(
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text('Place list')
+      ),
+      body: Row(
+        children: <Widget>[
+          Container(
+            width: containerWidth,
+            child: ListView(
+              
+            )
+          ),
+          Container(
+            width: containerWidth,
+            child: ListView(
+
+            )
+          )
+        ],
+      )
+    );
+  }
+}
+
+class ReserveRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text('Place reservation')
       )
     );
   }
