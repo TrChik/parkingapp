@@ -1,8 +1,14 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:parkingapp/widgets/sidemenu.dart';
+
+import 'clientModel.dart';
+import 'data.dart';
+
 
 
 void main() {
@@ -172,6 +178,7 @@ Fine for a long delay in the parking lot – 300 UAH.''',
 }
 
 class ViewRoute extends StatelessWidget {
+
   @override
   Widget build(BuildContext context){
     double containerWidth = MediaQuery.of(context).size.width / 2;
@@ -186,20 +193,46 @@ class ViewRoute extends StatelessWidget {
       body: Row(
         children: <Widget>[
           Container(
+            color: Colors.green[100],
             width: containerWidth,
-            child: ListView(
-              
+            child: FutureBuilder<List<Client>>(
+              future: DBProvider.db.getFreeClients(),
+              builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+                if(!snapshot.hasData) return Container();
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index){
+                    Client item = snapshot.data[index];
+                    return ListTile(
+                      title: Text(item.id.toString())
+                    );
+                  },
+                );
+              }
             )
           ),
           Container(
             width: containerWidth,
-            child: ListView(
-
+            color: Colors.red[100],
+            child: FutureBuilder<List<Client>>(
+              future: DBProvider.db.getNotFreeClients(),
+              builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+                if(!snapshot.hasData) return Container();
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index){
+                    Client item = snapshot.data[index];
+                    return ListTile(
+                      title: Text(item.id.toString())
+                    );
+                  },
+                );
+              }
             )
           )
         ],
       )
-    );
+      );
   }
 }
 
