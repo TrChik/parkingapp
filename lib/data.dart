@@ -49,7 +49,7 @@ class DBProvider {
         ")"
       );
 
-      for(int i = 1; i <= 40; i++) this.newClient(new Client(id: i, status: true));
+      for(int i = 1; i <= 40; i++) this.newClient(new Client(id: i, status: true));       // status true means place is free, false means its not
     });
   }
 
@@ -91,14 +91,14 @@ class DBProvider {
     return res;
   }
 
-  changeStatus(Client client) async {
+  changeStatus(int clid, bool newstatus) async {
     final db = await database;
     Client status = Client(
-      id: client.id,
-      status: !client.status
+      id: clid,
+      status: newstatus
     );
     var res = await db.update("Client", status.toMap(),
-      where: "id = ?", whereArgs: [client.id]);
+      where: "id = ?", whereArgs: [clid]);
     return res;
   }
 

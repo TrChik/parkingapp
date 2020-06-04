@@ -212,7 +212,7 @@ class ViewRoute extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index){
                     Client item = snapshot.data[index];
                     return ListTile(
-                      title: Text(item.id.toString())
+                      title: Text(item.id.toString(), style: TextStyle(fontSize: 15))
                     );
                   },
                 );
@@ -268,20 +268,9 @@ class ReserveRoute extends StatelessWidget {
       ),
       body: Column (
         children: <Widget>[
-          FutureBuilder<List<Client>>(
-            future: DBProvider.db.getAllClients(),
-            builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
-              return Column(
-                children: <Widget>[
-                  Container(
-                    height: 100,
-                    padding: EdgeInsets.only(left: 30),
-                    child: FreeDropDownList()
-                  )
-                ],
-              );
-            }
-          )
+           Container(
+              child: FreeDropDownList(),
+            )
         ],
       )
     );
@@ -298,37 +287,152 @@ class FreeDropDownList extends StatefulWidget {
 
 class _FreeDropDownList extends State<FreeDropDownList> {
   int dropdownValue = 1;
+  int unresDropdownValue = 1;
+  bool resExist = false;
+  bool unresExist = false;
 
   @override
   Widget build(BuildContext context){
-    return FutureBuilder<List<Client>>(
-      future: DBProvider.db.getNotFreeClients(),
-      builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
-        if(!snapshot.hasData){
-          return Center(
-            child: Text('It appears no free places were found...')
-          );
-        }
-        List<int> valueList;
-        for(Client client in snapshot.data){
-          valueList.add(client.id);
-        }
-        return DropdownButton<int>(
-          
-          value: dropdownValue,
-          icon: Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          style: TextStyle(color: Colors.deepPurple),
-          onChanged: (int newValue) {
-            setState(() {
-              dropdownValue = newValue;
-            });
-          },
-          items: []
-        );
-      }
+    return Container(
+      padding: EdgeInsets.only(left: 20, top: 5),
+      child: Column(
+        children: <Widget>[
+          FutureBuilder<List<Client>>(
+            future: DBProvider.db.getFreeClients(),
+            builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+              if(!snapshot.hasData || snapshot.data.length == 0){
+                resExist = false;
+                return Center(
+                  child: Text('It appears no free places were found...', style: TextStyle(fontSize: 20))
+                );
+              }
+              resExist = true;
+              List<int> valueList = [];
+              for(Client client in snapshot.data){
+                valueList.add(client.id);
+              }
+              if(!valueList.contains(dropdownValue)) dropdownValue = valueList[0];
+              return DropdownButton<int>(
+                
+                value: dropdownValue,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.deepPurple),
+                onChanged: (int newValue) {
+                  setState(() {
+                    dropdownValue = newValue;
+                  });
+                },
+                items: valueList.map<DropdownMenuItem<int>>((int value) {
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Text('$value', style: TextStyle(fontSize: 20)),
+                  );
+                }).toList(),
+              );
+            }
+          ),
+          const SizedBox(height: 5),
+          ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: RaisedButton(
+                  onPressed: () {
+                    if(resExist){
+                      DBProvider.db.changeStatus(dropdownValue, false);
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text('Success!', style: TextStyle(fontSize: 16)),
+                            content: Text('Operation succesful!'),
+                            actions: <Widget>[
+                              FlatButton(child: Text('OK'), onPressed: (){ Navigator.of(context).pop(); })
+                            ],
+                          );
+                        },
+                      );
+                      setState(() {});
+                    }
+                  },
+                  color: Colors.blue[400],
+                  child: Container(
+                    padding: EdgeInsets.only(left: 100, right: 100),
+                    child: Text('Reserve place',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))
+                  )
+                )
+              ),
+          FutureBuilder<List<Client>>(
+            future: DBProvider.db.getNotFreeClients(),
+            builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+              if(!snapshot.hasData || snapshot.data.length == 0){
+                unresExist = false;
+                return Center(
+                  child: Text('It appears no taken places were found...', style: TextStyle(fontSize: 20))
+                );
+              }
+              unresExist = true;
+              
+              List<int> valueList = [];
+              for(Client client in snapshot.data){
+                valueList.add(client.id);
+              }
+              if(!valueList.contains(unresDropdownValue)) unresDropdownValue = valueList[0];
+              return DropdownButton<int>(
+                
+                value: unresDropdownValue,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.deepPurple),
+                onChanged: (int newValue) {
+                  setState(() {
+                    unresDropdownValue = newValue;
+                  });
+                },
+                items: valueList.map<DropdownMenuItem<int>>((int value) {
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Text('$value', style: TextStyle(fontSize: 20)),
+                  );
+                }).toList(),
+              );
+            }
+          ),
+          const SizedBox(height: 5),
+          ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: RaisedButton(
+                  onPressed: () {
+                    if(unresExist){ 
+                      DBProvider.db.changeStatus(unresDropdownValue, true);
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text('Success!', style: TextStyle(fontSize: 16)),
+                            content: Text('Operation succesful!'),
+                            actions: <Widget>[
+                              FlatButton(child: Text('OK'), onPressed: (){ Navigator.of(context).pop(); })
+                            ],
+                          );
+                        },
+                      );
+                      setState(() {});
+                    }
+                  },
+                  color: Colors.blue[400],
+                  child: Container(
+                    padding: EdgeInsets.only(left: 92, right: 92),
+                    child: Text('Unreserve place',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16))
+                  )
+                )
+              ),
+        ])
     );
-    
   }
 }
