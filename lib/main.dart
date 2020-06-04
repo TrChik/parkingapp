@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:parkingapp/widgets/sidemenu.dart';
+// import 'package:parkingapp/widgets/sidemenu.dart';
 
 import 'clientModel.dart';
 import 'data.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      title: 'Hello?',
+      title: '.lego parking app',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -44,9 +44,8 @@ class MyHomePage extends StatelessWidget {
     
 
     return Scaffold(
-      drawer: NavDrawer(),
       appBar: AppBar(
-        title: Text('trying get stuff to work here ok'),
+        title: Text('.lego parking app'),
       ),
       body: Stack(
         children: <Widget>[
@@ -188,7 +187,14 @@ class ViewRoute extends StatelessWidget {
           icon: new Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Place list')
+        title: FutureBuilder<List<Client>>(
+          future: DBProvider.db.getAllClients(),
+          builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+            if(!snapshot.hasData) return Text('Loading...');
+            if(snapshot.data.length == 0) DBProvider.db.fillDataBase(40);
+            return Text('View list');
+          }
+        )
       ),
       body: Row(
         children: <Widget>[
@@ -198,7 +204,9 @@ class ViewRoute extends StatelessWidget {
             child: FutureBuilder<List<Client>>(
               future: DBProvider.db.getFreeClients(),
               builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
-                if(!snapshot.hasData) return Container();
+                if(!snapshot.hasData){
+                  return Container();
+                }
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
@@ -217,7 +225,9 @@ class ViewRoute extends StatelessWidget {
             child: FutureBuilder<List<Client>>(
               future: DBProvider.db.getNotFreeClients(),
               builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
-                if(!snapshot.hasData) return Container();
+                if(!snapshot.hasData){
+                  return Container();
+                }
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index){
@@ -231,7 +241,7 @@ class ViewRoute extends StatelessWidget {
             )
           )
         ],
-      )
+      ),
       );
   }
 }
@@ -243,10 +253,82 @@ class ReserveRoute extends StatelessWidget {
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => {
+            Navigator.of(context).pop()
+          }
         ),
-        title: Text('Place reservation')
+        title: FutureBuilder<List<Client>>(
+          future: DBProvider.db.getAllClients(),
+          builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+            if(!snapshot.hasData) return Text('Loading...');
+            if(snapshot.data.length == 0) DBProvider.db.fillDataBase(40);
+            return Text('Place reservation');
+          }
+        )
+      ),
+      body: Column (
+        children: <Widget>[
+          FutureBuilder<List<Client>>(
+            future: DBProvider.db.getAllClients(),
+            builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+              return Column(
+                children: <Widget>[
+                  Container(
+                    height: 100,
+                    padding: EdgeInsets.only(left: 30),
+                    child: FreeDropDownList()
+                  )
+                ],
+              );
+            }
+          )
+        ],
       )
     );
+  }
+}
+
+class FreeDropDownList extends StatefulWidget {
+  FreeDropDownList({Key key}) : super(key: key);
+
+  @override
+
+  _FreeDropDownList createState() => _FreeDropDownList();
+}
+
+class _FreeDropDownList extends State<FreeDropDownList> {
+  int dropdownValue = 1;
+
+  @override
+  Widget build(BuildContext context){
+    return FutureBuilder<List<Client>>(
+      future: DBProvider.db.getNotFreeClients(),
+      builder: (BuildContext context, AsyncSnapshot<List<Client>> snapshot){
+        if(!snapshot.hasData){
+          return Center(
+            child: Text('It appears no free places were found...')
+          );
+        }
+        List<int> valueList;
+        for(Client client in snapshot.data){
+          valueList.add(client.id);
+        }
+        return DropdownButton<int>(
+          
+          value: dropdownValue,
+          icon: Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          onChanged: (int newValue) {
+            setState(() {
+              dropdownValue = newValue;
+            });
+          },
+          items: []
+        );
+      }
+    );
+    
   }
 }

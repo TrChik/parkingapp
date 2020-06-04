@@ -22,11 +22,21 @@ class DBProvider {
     return _database;
   }
 
-    newClient(Client newClient) async {
+  newClient(Client newClient) async {
     final db = await database;
     var res = await db.insert("Client", newClient.toMap());
     return res;
   }
+
+  recreate() async {
+    final db = await database;
+    await db.execute("CREATE TABLE Client ("
+        "id INTEGER PRIMARY KEY,"
+        "status BIT"
+        ")"
+      );
+  }
+
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -43,8 +53,8 @@ class DBProvider {
     });
   }
 
-  fillClients(int n) async { 
-    for(int i = 1; i <= n; i++) this.newClient(new Client(id: i, status: true));
+  fillDataBase(int number) async {
+    for(int i = 1; i <= number; i++) this.newClient(new Client(id: i, status: true));
   }
 
   getClient(int id) async {
@@ -97,8 +107,4 @@ class DBProvider {
     db.delete("Client", where: "id = ?", whereArgs: [id]);
   }
 
-  clearClients() async {
-    final db = await database;
-    db.delete("Client");
-  }
 }
